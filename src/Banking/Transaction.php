@@ -21,6 +21,10 @@ class Transaction
     private $valueTimestamp = 0;
     private $entryTimestamp = 0;
     private $transactionCode = '';
+    private $eRef = ''; // electronic ref
+    private $marf = ''; // mandate ref
+    private $pRef = ''; // payment info id sdd
+    private $rtrn = ''; // return reason dd
 
     /**
      * @param string $var
@@ -84,6 +88,48 @@ class Transaction
     public function setTransactionCode($var)
     {
         $this->transactionCode = (string) $var;
+    }
+
+    /**
+     * @param string $eRef
+     */
+    public function setERef($eRef) {
+        $this->eRef = $eRef;
+    }
+
+    /**
+     * @param string $marf
+     */
+    public function setMarf($marf) {
+        $this->marf = $marf;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPRef() {
+        return $this->pRef;
+    }
+
+    /**
+     * @param string $pRef
+     */
+    public function setPRef($pRef) {
+        $this->pRef = $pRef;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRtrn() {
+        return $this->rtrn;
+    }
+
+    /**
+     * @param string $rtrn
+     */
+    public function setRtrn($rtrn) {
+        $this->rtrn = $rtrn;
     }
 
     // getters
@@ -153,6 +199,20 @@ class Transaction
     public function getTransactionCode()
     {
         return $this->transactionCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getERef() {
+        return $this->eRef;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMarf() {
+        return $this->marf;
     }
 
     /**

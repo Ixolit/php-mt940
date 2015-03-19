@@ -97,6 +97,10 @@ abstract class Engine
                 $transaction->setValueTimestamp($this->parseTransactionValueTimestamp());
                 $transaction->setEntryTimestamp($this->parseTransactionEntryTimestamp());
                 $transaction->setTransactionCode($this->parseTransactionCode());
+                $transaction->setERef($this->parseTransactionERef());
+                $transaction->setMarf($this->parseTransactionMarf());
+                $transaction->setPRef($this->parseTransactionPRef());
+                $transaction->setRtrn($this->parseTransactionRtrn());
                 $statement->addTransaction($transaction);
             }
             $results[] = $statement;
@@ -380,6 +384,70 @@ abstract class Engine
         $results = array();
         if (preg_match('/^:61:.*?N(.{3}).*/', $this->getCurrentTransactionData(), $results)
                 && !empty($results[1])
+        ) {
+            return trim($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * uses the 86 field to get a SEPA EREF
+     * @return string
+     */
+    protected function parseTransactionERef()
+    {
+        $results = array();
+        if (preg_match('#[\n]:86:.*?/EREF/(.*?)/#s', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return trim($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * uses the 86 field to get a SEPA MARF mandate ref
+     * @return string
+     */
+    protected function parseTransactionMarf()
+    {
+        $results = array();
+        if (preg_match('#[\n]:86:.*?/MARF/(.*?)/#s', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return trim($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * uses the 86 field to get a SEPA batch payment info ref
+     * @return string
+     */
+    protected function parseTransactionPRef()
+    {
+        $results = array();
+        if (preg_match('#[\n]:86:.*?/PREF/(.*?)/#s', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
+        ) {
+            return trim($results[1]);
+        }
+
+        return '';
+    }
+
+    /**
+     * uses the 86 field to get the return reason for DD
+     * @return string
+     */
+    protected function parseTransactionRtrn()
+    {
+        $results = array();
+        if (preg_match('#[\n]:86:.*?/RTRN/(.*?)/#s', $this->getCurrentTransactionData(), $results)
+            && !empty($results[1])
         ) {
             return trim($results[1]);
         }
